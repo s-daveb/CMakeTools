@@ -4,7 +4,7 @@
 include(BuildOptions)
 include(Util)
 
-git_submodule_update()
+git_setup_submodules()
 prevent_in_source_build()
 disable_deprecated_Features()
 
