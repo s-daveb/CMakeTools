@@ -1,25 +1,9 @@
-# BuildPreferences.cmake
-# Copyright (c) 2024 Saul D Beniquez
-# License: MIT
-#
-# This module defines a function prevent_in_source_build() that prevents in-source builds
-# and sets a policy for CMake version 3.24.0 and above.
+# BuildProperties.cmake
+# License: Unlicense (https://unlicense.org)
 
-function(prevent_in_source_build)
-	# Prevent in-source builds
-	if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
-		message(FATAL_ERROR "Source and build directories cannot be the same.")
-	endif()
-endfunction()
-
-function(disable_deprecated_features)
-	# Use new timestamp behavior when extracting files archives
-	if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
-		cmake_policy(SET CMP0135 NEW)
-	endif()
-endfunction()
-
-
+macro(set_binary_output_path path)
+	set_artifact_dir(path)
+endmacro()
 
 function(set_artifact_dir path)
     # Set local variable, not necessary to be parent scope since it's not used outside this function
@@ -36,7 +20,6 @@ function(set_artifact_dir path)
 endfunction()
 
 function(package_library_headers LibraryTarget)
-
 	if (NOT DEFINED ${PROJECT_NAME}_INCLUDE_OUTPUT_DIR)
 		message(FATAL_ERROR "Before calling package_library_headers, set the artifact directory using set_artifact_dir()")
 	endif()
@@ -88,14 +71,6 @@ function(package_library_headers LibraryTarget)
 
     # Add the custom target as a dependency of the library target
     add_dependencies(${LibraryTarget} ${target_name})
-endfunction()
-
-function(disable_tests_if_subproject)
-	option(BUILD_TESTING "Build unit tests" ON)
-
-	if (DEFINED PROJECT_NAME)
-		set(BUILD_TESTING OFF PARENT_SCOPE)
-	endif()
 endfunction()
 
 

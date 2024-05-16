@@ -1,9 +1,10 @@
+# BuildOptions.cmake
+# License: Unlicense (https://unlicense.org)
+
+option(USE_CCACHE "Use ccache compiler cache to speed up builds" ON)
+option(USE_MOLD "Use the mold/sold parallel linker for faster builds" ON)
 
 function(use_ccache)
-	option(USE_CCACHE
-		"Use ccache compiler cache to speed up builds.\nEnabled by default if ccache is found"
-		ON
-	)
 	if (USE_CCACHE)
 		message(CHECK_START "Detecting cacche")
 
@@ -22,7 +23,6 @@ function(use_ccache)
 endfunction()
 
 function(check_and_set_linker)
-	option(USE_MOLD "Use the mold/sold parallel linker for faster builds" ON)
 	if(USE_MOLD)
   		# Determine if the compiler is GCC or Clang
   		if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")

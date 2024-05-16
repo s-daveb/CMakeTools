@@ -11,11 +11,16 @@ manage build options, preferences, properties, and utilities for a CMake-based p
 The main scripts included are:
 
 - `BuildOptions.cmake`
-- `BuildPreferences.cmake`
 - `Util.cmake`
 
 Additional third-party scripts included are:
 - [![GitHub](https://img.shields.io/badge/GitHub-CPM.cmake-yellow.svg)](https://github.com/cpm-cmake/CPM.cmake) ![MIT](https://img.shields.io/badge/License-MIT-red.svg)
+
+A convenience .cmake file with some default behavior is also included:
+- `DefaultConfig.cmake`
+    - _Contains some sane defaults to reduce repetitive typing_
+
+
 ## Getting Started
 
 ### Prerequisites
