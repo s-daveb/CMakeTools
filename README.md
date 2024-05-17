@@ -43,17 +43,18 @@ A convenience .cmake file with some default behavior is also included:
     # CMakeLists.txt
     cmake_minimum_required(VERSION 3.26)
 
-    include(CMake/Util)
+    list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
+    include(Util)
     git_setup_submodules()
 
-    include(CMake/BuildPreferences)
-    iunclude(Cmake/BuildOptions)
+    include(BuildPreferences)
+    iunclude(BuildOptions)
 
     prevent_in_source_build()
     disable_deprecated_features()
 
     ## or 
-    # include(CMake/DefaultConfig)
+    # include(DefaultConfig)
 
     project(MyProject)
     ```
