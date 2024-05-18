@@ -1,6 +1,8 @@
 # Util.cmake
 # License: Unlicense
 
+include(BuildOptions)
+
 macro(ASSERT condition message)
     if(NOT ${condition})
         message(FATAL_ERROR ${message})
@@ -40,10 +42,8 @@ macro(disable_deprecated_features)
 endmacro()
 
 macro(disable_tests_if_subproject)
-	option(BUILD_TESTING "Build unit tests" ON)
-
 	if (DEFINED PROJECT_NAME)
-		set(BUILD_TESTING OFF PARENT_SCOPE)
+		set(BUILD_TESTING OFF)
 	endif()
 endmacro()
 
