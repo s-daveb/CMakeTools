@@ -19,7 +19,7 @@ function(set_artifact_dir path)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${path}/bin" PARENT_SCOPE)
 endfunction()
 
-function(package_library_headers LibraryTarget)
+function(package_library_headers LibraryTarget HeadersPath)
 	if (NOT DEFINED ${PROJECT_NAME}_INCLUDE_OUTPUT_DIR)
 		message(FATAL_ERROR "Before calling package_library_headers, set the artifact directory using set_artifact_dir()")
 	endif()
@@ -30,38 +30,10 @@ function(package_library_headers LibraryTarget)
 
     # Create a list to hold custom commands
     set(custom_commands
-		COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/${LibraryTarget} )
-
-    set(is_glob false)
-    # Iterate over each argument to copy them
-    foreach(item IN LISTS ARGN)
-        if (IS_DIRECTORY ${item})
-            get_filename_component(item_name ${item} NAME)
-            list(APPEND custom_commands
-                COMMAND ${CMAKE_COMMAND} -E copy_directory ${item} ${output_dir}/${LibraryTarget}/${item_name}
-            )
-        else()
- 	 	 	if (${is_glob})
-            	file(GLOB glob_files ${item})
-            	list(APPEND expanded_items ${glob_files})
-            	#message(STATUS "glob_files" ${glob_files})
-            	set(is_glob false)
-        		foreach(expanded IN LISTS expanded_items)
-					get_filename_component(item_name ${expanded} NAME)
-					list(APPEND custom_commands
-						COMMAND ${CMAKE_COMMAND} -E copy ${expanded} ${output_dir}/${LibraryTarget}/${item_name}
-					)
-				endforeach()
-			elseif (item STREQUAL "GLOB")
-            	set(is_glob true)
-            else()
-            	get_filename_component(item_name ${item} NAME)
-            	list(APPEND custom_commands
-                	COMMAND ${CMAKE_COMMAND} -E copy ${item} ${output_dir}/${LibraryTarget}/${item_name}
-            	)
-    		endif()
-    	endif()
-    endforeach()
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir} )
+    list(APPEND custom_commands
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${HeadersPath} ${output_dir}/${LibraryTarget}
+    )
 
     # Create the target to copy directories and files
     add_custom_target(${target_name} ALL
