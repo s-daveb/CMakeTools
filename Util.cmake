@@ -47,4 +47,28 @@ macro(disable_tests_if_subproject)
 	endif()
 endmacro()
 
+function(package_library_headers LibraryTarget HeadersPath)
+	if (NOT DEFINED ${PROJECT_NAME}_INCLUDE_OUTPUT_DIR)
+		message(FATAL_ERROR "Before calling package_library_headers, set the artifact directory using set_artifact_dir()")
+	endif()
 
+    # Create the custom target name
+    set(target_name "${LibraryTarget}_copy_include_directory")
+    set(output_dir "${${PROJECT_NAME}_INCLUDE_OUTPUT_DIR}")
+
+    # Create a list to hold custom commands
+    set(custom_commands
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir} )
+    list(APPEND custom_commands
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${HeadersPath} ${output_dir}/${LibraryTarget}
+    )
+
+    # Create the target to copy directories and files
+    add_custom_target(${target_name} ALL
+        ${custom_commands}
+        COMMENT "Copying files and directories to ${output_dir}/include/${LibraryTarget}/"
+    )
+
+    # Add the custom target as a dependency of the library target
+    add_dependencies(${LibraryTarget} ${target_name})
+endfunction()
