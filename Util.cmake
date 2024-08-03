@@ -60,7 +60,7 @@ function(package_library_headers LibraryTarget HeadersPath)
     set(custom_commands
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir} )
     list(APPEND custom_commands
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${HeadersPath} ${output_dir}/${LibraryTarget}
+        COMMAND ${CMAKE_COMMAND} -E create_symlink  ${HeadersPath} ${output_dir}/${LibraryTarget}
     )
 
     # Create the target to copy directories and files
