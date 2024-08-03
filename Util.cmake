@@ -53,7 +53,7 @@ function(package_library_headers LibraryTarget HeadersPath)
 	endif()
 
     # Create the custom target name
-    set(target_name "${LibraryTarget}_copy_include_directory")
+    set(target_name "${LibraryTarget}_public_include_directory")
     set(output_dir "${${PROJECT_NAME}_INCLUDE_OUTPUT_DIR}")
 
     # Create a list to hold custom commands
@@ -66,7 +66,7 @@ function(package_library_headers LibraryTarget HeadersPath)
     # Create the target to copy directories and files
     add_custom_target(${target_name} ALL
         ${custom_commands}
-        COMMENT "Copying files and directories to ${output_dir}/include/${LibraryTarget}/"
+        COMMENT "Linking include directories to ${output_dir}/include/${LibraryTarget}/"
     )
 
     # Add the custom target as a dependency of the library target
