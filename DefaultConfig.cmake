@@ -4,7 +4,6 @@
 include(BuildOptions)
 include(Util)
 
-git_setup_submodules()
 prevent_in_source_build()
 disable_deprecated_features()
 
