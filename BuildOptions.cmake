@@ -4,7 +4,7 @@ option(USE_CCACHE "Use ccache compiler cache to speed up builds" ON)
 option(USE_MOLD "Use the mold/sold parallel linker for faster builds" ON)
 option(BUILD_TESTING "Build unit tests" ON)
 
-function(use_ccache)
+function(add_ccache_support)
 	if (USE_CCACHE)
 		message(CHECK_START "Detecting cacche")
 
