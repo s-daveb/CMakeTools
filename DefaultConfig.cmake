@@ -13,4 +13,7 @@ disable_deprecated_features()
 # This check must appear beforezR project()
 disable_tests_if_subproject()
 
+check_and_set_linker()
+setup_compiler_launchers()
+
 # vim: ts=4 sts=4 sw=4 noet foldmethod=indent :
