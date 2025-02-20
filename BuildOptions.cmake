@@ -1,7 +1,7 @@
 # BuildOptions.cmake
 # License: Unlicense (https://unlicense.org)
-option(USE_CCACHE "Use ccache compiler cache to speed up builds" ON)
-option(USE_MOLD "Use the mold/sold parallel linker for faster builds" ON)
+option(USE_CCACHE "Use ccache compiler cache to speed up builds" OFF)
+option(USE_MOLD "Use the mold/sold parallel linker for faster builds" OFF)
 option(BUILD_TESTING "Build unit tests" ON)
 
 function(add_ccache_support)
