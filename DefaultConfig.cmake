@@ -12,6 +12,5 @@ disable_deprecated_features()
 # Sets -DBUILD_TESTING to false by default if this is a third-party lib build
 # This check must appear beforezR project()
 disable_tests_if_subproject()
-setup_compiler_launchers()
 
 # vim: ts=4 sts=4 sw=4 noet foldmethod=indent :

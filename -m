@@ -1,7 +1,0 @@
-Head: devel
-Rebase: origin/devel
-Help: g?
-
-Staged (2)
-M BuildOptions.cmake
-M DefaultConfig.cmake
