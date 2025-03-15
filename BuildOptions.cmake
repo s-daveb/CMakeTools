@@ -10,16 +10,21 @@ function(add_ccache_support)
 
 		find_program(CCACHE_PATH ccache)
 		if(CCACHE_PATH)
-				message(CHECK_PASS("found"))
-				set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CCACHE_PATH})
-				set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ${CCACHE_PATH})
+			message(STATUS "ccache found: ${CCACHE_PATH}")
+
+			if(DEFINED CMAKE_C_COMPILER_LAUNCHER)
+				set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PATH};${CMAKE_C_COMPILER_LAUNCHER}")
+			else()
+				set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PATH}")
+			endif()
+
+			if(DEFINED CMAKE_CXX_COMPILER_LAUNCHER)
+				set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PATH};${CMAKE_CXX_COMPILER_LAUNCHER}")
+			else()
+				set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PATH}")
+			endif()
 		endif()
-
-		list(APPEND CMAKE_MESSAGE_INDENT " ")
-			message(STATUS "(set -DUSE_CCACHE=Off to disable)")
-		list(POP_BACK CMAKE_MESSAGE_INDENT)
 	endif()
-
 endfunction()
 
 function(check_and_set_linker)
@@ -50,3 +55,5 @@ function(check_and_set_linker)
   		endif()
 	endif()
 endfunction()
+
+# vim: set ts=4 sw=4 sts=4  noexpandtab :
