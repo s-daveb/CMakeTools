@@ -33,16 +33,11 @@ function(check_and_set_linker)
   		if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     		message(STATUS "Detected GCC/Clang, checking for mold/sold linker...")
 
-    		# Check for mold linker on general systems and ld64.mold on macOS
-    		if(APPLE)
-      			find_program(MOLD_LINKER ld64.mold)
-      			set(CMAKE_LINKER_TYPE SOLD)
-  			else()
-    			find_program(MOLD_LINKER mold)
-      			set(CMAKE_LINKER_TYPE MOLD)
-    		endif()
+    		# Check for mold linker on general systems mold on macOS
+			find_program(MOLD_LINKER mold)
 
     		if(MOLD_LINKER)
+      			set(CMAKE_LINKER_TYPE MOLD)
       			message(STATUS "LINKER_TYPE set to ${CMAKE_LINKER_TYPE} for faster builds")
 				list(APPEND CMAKE_MESSAGE_INDENT " ")
 				message(STATUS "(set -DUSE_MOLD=OFF to disable)")
