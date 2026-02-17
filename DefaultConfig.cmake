@@ -14,4 +14,6 @@ disable_deprecated_features()
 disable_tests_if_subproject()
 add_ccache_support()
 
+macos_use_correct_stdlib()
+
 # vim: ts=4 sts=4 sw=4 noet foldmethod=indent :

@@ -19,7 +19,9 @@ function(set_artifact_dir path)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${path}/bin" PARENT_SCOPE)
 endfunction()
 
-
+macro(set_binary_output_path path)
+	set_artifact_dir(path)
+endmacro()
 
 
 # vim: ts=4 sts=4 sw=4 noet foldmethod=indent :
