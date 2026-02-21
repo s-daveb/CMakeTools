@@ -2,11 +2,12 @@
 # License: Unlicense (https://unlicense.org)
 
 macro(set_binary_output_path path)
-	set_artifact_dir(path)
+    set_artifact_dir(path)
 endmacro()
 
 function(set_artifact_dir path)
-    # Set local variable, not necessary to be parent scope since it's not used outside this function
+    # Set local variable, not necessary to be parent scope since it's not
+    # used outside this function
     set(ARTIFACT_DIR "${path}")
 
     # Set project-specific artifact directory in parent scope
@@ -20,8 +21,8 @@ function(set_artifact_dir path)
 endfunction()
 
 macro(set_binary_output_path path)
-	set_artifact_dir(path)
+    set_artifact_dir(path)
 endmacro()
 
 
-# vim: ts=4 sts=4 sw=4 noet foldmethod=indent :
+# vim: ts=4 sts=4 sw=4 et foldmethod=indent :
