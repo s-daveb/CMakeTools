@@ -13,13 +13,15 @@ function(add_ccache_support)
             message(STATUS "ccache found: ${CCACHE_PATH}")
 
             if(DEFINED CMAKE_C_COMPILER_LAUNCHER)
-                set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PATH};${CMAKE_C_COMPILER_LAUNCHER}")
+                set(CMAKE_C_COMPILER_LAUNCHER
+                    "${CCACHE_PATH};${CMAKE_C_COMPILER_LAUNCHER}")
             else()
                 set(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PATH}")
             endif()
 
             if(DEFINED CMAKE_CXX_COMPILER_LAUNCHER)
-                set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PATH};${CMAKE_CXX_COMPILER_LAUNCHER}")
+                set(CMAKE_CXX_COMPILER_LAUNCHER
+                    "${CCACHE_PATH};${CMAKE_CXX_COMPILER_LAUNCHER}")
             else()
                 set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PATH}")
             endif()
@@ -31,22 +33,28 @@ function(check_and_set_linker)
     if(USE_MOLD)
         # Determine if the compiler is GCC or Clang
         if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-            message(STATUS "Detected GCC/Clang, checking for mold/sold linker...")
+            message(STATUS
+                "Detected GCC/Clang, checking for mold/sold linker...")
 
             # Check for mold linker on general systems mold on macOS
             find_program(MOLD_LINKER mold)
 
             if(MOLD_LINKER)
                 set(CMAKE_LINKER_TYPE MOLD)
-                message(STATUS "LINKER_TYPE set to ${CMAKE_LINKER_TYPE} for faster builds")
+                message(STATUS
+                    "LINKER_TYPE set to ${CMAKE_LINKER_TYPE} for faster builds")
                 list(APPEND CMAKE_MESSAGE_INDENT " ")
                 message(STATUS "(set -DUSE_MOLD=OFF to disable)")
                 list(POP_BACK CMAKE_MESSAGE_INDENT)
             else()
-                message(STATUS "  -- No suitable mold linker found. Using default linker.")
+                message(STATUS
+                    "  -- No suitable mold linker found. Using default linker.")
             endif()
         else()
-            message(STATUS "Compiler is neither GCC nor Clang. Skipping mold linker check.")
+            message(STATUS
+                "Compiler is neither GCC nor Clang."
+                " Skipping mold linker check."
+            )
         endif()
     endif()
 endfunction()
@@ -72,8 +80,9 @@ function(macos_use_correct_stdlib)
             set(CLANG_EXECUTABLE "$ENV{CC}")
         else()
             # Treat CC as a hint/path; let CMake search it
-            find_program(CLANG_EXECUTABLE clang
-                         HINTS "$ENV{CC}" NO_DEFAULT_PATH)
+            find_program(
+                CLANG_EXECUTABLE clang
+                HINTS "$ENV{CC}" NO_DEFAULT_PATH)
         endif()
     else()
         # Fallback to the default search
@@ -94,7 +103,9 @@ function(macos_use_correct_stdlib)
     string(FIND "${ClangAbsPath}" "/Applications/Xcode.app" XcodeInPath)
     if(NOT XcodeInPath EQUAL -1)
         message(STATUS
-            "Using Xcode clang (${ClangAbsPath}) – Homebrew stdlib detection skipped")
+            "Using Xcode clang (${ClangAbsPath}) –"
+            " Homebrew stdlib detection skipped"
+        )
         return()
     endif()
 
@@ -108,7 +119,9 @@ function(macos_use_correct_stdlib)
     string(FIND "${CLANG_VER}" "Apple clang" AppleClangIdx)
     if(NOT AppleClangIdx EQUAL -1)
         message(STATUS
-            "Detected Apple clang from --version output – Homebrew stdlib detection skipped")
+            "Detected Apple clang from --version output"
+            " Homebrew stdlib detection skipped"
+        )
         return()
     endif()
 
