@@ -68,7 +68,7 @@ function(package_library_headers LibraryTarget HeadersPath)
         COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir})
     list(APPEND custom_commands
         COMMAND
-            ${CMAKE_COMMAND} -E copy
+            ${CMAKE_COMMAND} -E copy_directory
             ${HeadersPath} ${output_dir}/${LibraryTarget}
     )
 
