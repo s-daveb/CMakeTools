@@ -3,13 +3,13 @@
 
 include(BuildOptions)
 
-macro(ASSERT condition message)
+function(ASSERT condition message)
     if(NOT ${condition})
         message(FATAL_ERROR ${message})
     endif()
-endmacro()
+endfunction()
 
-macro(git_setup_submodules)
+function(git_setup_submodules)
     find_package(Git QUIET)
     if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
         option(GIT_SUBMODULE "Check submodules during build" ON)
@@ -29,27 +29,44 @@ macro(git_setup_submodules)
     else()
         message(FATAL_ERROR "Git not found or .git directory not found")
     endif()
-endmacro()
+endfunction() # git_setup_submodules
 
-macro(prevent_in_source_build)
+function(git_setup_hooks hooks_dir)
+    find_package(Git QUIET)
+
+    if(GIT_FOUND)
+        execute_process(
+            COMMAND "${GIT_EXECUTABLE}" config core.hooksPath ${hooks_dir}
+            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+            RESULT_VARIABLE _githookscfg_result
+        )
+        if(NOT _githookscfg_result EQUAL 0)
+            message(WARNING
+                "Git Config: Failed to set core.hooksPath. Is Git installed??")
+        endif()
+        message("-- Git Config: hooksPath has been set to `${hooks_dir}`")
+    endif()
+endfunction() # git_setup_hooks
+
+function(prevent_in_source_build)
     # Prevent in-source builds
     if(CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
         message(FATAL_ERROR "Source and build directories cannot be the same.")
     endif()
-endmacro()
+endfunction()
 
-macro(disable_deprecated_features)
+function(disable_deprecated_features)
     # Use new timestamp behavior when extracting files archives
     if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
         cmake_policy(SET CMP0135 NEW)
     endif()
-endmacro()
+endfunction()
 
-macro(disable_tests_if_subproject)
+function(disable_tests_if_subproject)
     if(DEFINED PROJECT_NAME)
         set(BUILD_TESTING OFF)
     endif()
-endmacro()
+endfunction()
 
 function(package_library_headers LibraryTarget HeadersPath)
     if(NOT DEFINED ${PROJECT_NAME}_INCLUDE_OUTPUT_DIR)
