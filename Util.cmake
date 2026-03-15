@@ -62,11 +62,11 @@ function(disable_deprecated_features)
     endif()
 endfunction()
 
-function(disable_tests_if_subproject)
+macro(disable_tests_if_subproject)
     if(DEFINED PROJECT_NAME)
         set(BUILD_TESTING OFF)
     endif()
-endfunction()
+endmacro()
 
 function(package_library_headers LibraryTarget HeadersPath)
     if(NOT DEFINED ${PROJECT_NAME}_INCLUDE_OUTPUT_DIR)
