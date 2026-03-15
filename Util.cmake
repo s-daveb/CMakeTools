@@ -3,11 +3,11 @@
 
 include(BuildOptions)
 
-function(ASSERT condition message)
+macro(ASSERT condition message)
     if(NOT ${condition})
         message(FATAL_ERROR ${message})
     endif()
-endfunction()
+endmacro()
 
 function(git_setup_submodules)
     find_package(Git QUIET)
@@ -48,19 +48,19 @@ function(git_setup_hooks hooks_dir)
     endif()
 endfunction() # git_setup_hooks
 
-function(prevent_in_source_build)
+macro(prevent_in_source_build)
     # Prevent in-source builds
     if(CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
         message(FATAL_ERROR "Source and build directories cannot be the same.")
     endif()
-endfunction()
+endmacro()
 
-function(disable_deprecated_features)
+macro(disable_deprecated_features)
     # Use new timestamp behavior when extracting files archives
     if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
         cmake_policy(SET CMP0135 NEW)
     endif()
-endfunction()
+endmacro()
 
 macro(disable_tests_if_subproject)
     if(DEFINED PROJECT_NAME)
@@ -68,7 +68,7 @@ macro(disable_tests_if_subproject)
     endif()
 endmacro()
 
-function(package_library_headers LibraryTarget HeadersPath)
+macro(package_library_headers LibraryTarget HeadersPath)
     if(NOT DEFINED ${PROJECT_NAME}_INCLUDE_OUTPUT_DIR)
         message(FATAL_ERROR
                 "Before calling package_library_headers, " ..
@@ -98,7 +98,7 @@ function(package_library_headers LibraryTarget HeadersPath)
 
     # Add the custom target as a dependency of the library target
     add_dependencies(${LibraryTarget} ${target_name})
-endfunction()
+endmacro()
 
 
 # Detects a Homebrew‑installed LLVM toolchain and adds the correct
