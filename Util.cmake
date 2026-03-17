@@ -78,60 +78,62 @@ macro(package_library_headers LibraryTarget HeadersPath)
     )
 endmacro()
 
-macro(publish_library_headers)
+function(publish_library_headers)
     cmake_parse_arguments(PLH
-        ""                  # options (flags)
-        "LIBRARY;HEADERS_DIR"  # single-value keywords
-        "GLOB"              # multi-value keywords (GLOB takes a pattern list)
+        "GLOB"
+        "LIBRARY;HEADERS_DIR"
+        ""
         ${ARGN}
     )
 
-    # Validate required args
     if(NOT DEFINED PLH_LIBRARY)
         message(FATAL_ERROR "publish_library_headers: LIBRARY is required")
     endif()
-    if(NOT DEFINED PLH_HEADERS_DIR AND NOT DEFINED PLH_GLOB)
-        message(FATAL_ERROR "publish_library_headers: HEADERS_DIR or GLOB is required")
+    if(NOT DEFINED PLH_HEADERS_DIR)
+        message(FATAL_ERROR "publish_library_headers: HEADERS_DIR is required")
     endif()
 
-    if(NOT DEFINED ${PROJECT_NAME}_INCLUDE_OUTPUT_DIR)
-        message(FATAL_ERROR
-            "Before calling publish_library_headers, "
-            "set the artifact directory using set_artifact_dir()"
-        )
-    endif()
 
     set(target_name "${PLH_LIBRARY}_public_include_directory")
-    set(output_dir "${${PROJECT_NAME}_INCLUDE_OUTPUT_DIR}/${PLH_LIBRARY}")
+    set(output_dir "${${PROJECT_NAME}_INCLUDE_OUTPUT_DIR}")
 
     set(custom_commands
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir})
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/${PLH_LIBRARY})
 
-    if(DEFINED PLH_GLOB)
-        # Expand glob patterns at configure time
+    if(PLH_GLOB)
+        message(INFO "-- Glob Mode initialized")
         file(GLOB_RECURSE resolved_headers
             "${PLH_HEADERS_DIR}/*.hpp"
             "${PLH_HEADERS_DIR}/*.h"
         )
 
-        list(APPEND custom_commands
-            COMMAND ${CMAKE_COMMAND} -E copy
-            ${resolved_headers} ${output_dir}
-        )
+        # Copy each file preserving relative path structure
+        foreach(header ${resolved_headers})
+            message("${header}")
+            file(RELATIVE_PATH relative_path ${PLH_HEADERS_DIR} ${header})
+            get_filename_component(relative_dir ${relative_path} DIRECTORY)
+            list(APPEND custom_commands
+                COMMAND ${CMAKE_COMMAND} -E make_directory
+                ${output_dir}/${PLH_LIBRARY}/${relative_dir}
+                COMMAND ${CMAKE_COMMAND} -E copy
+                ${header} ${output_dir}/${PLH_LIBRARY}/${relative_dir}
+            )
+        endforeach()
     else()
         list(APPEND custom_commands
             COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${PLH_HEADERS_DIR} ${output_dir}
+            ${PLH_HEADERS_DIR} ${output_dir}/${PLH_LIBRARY}
         )
     endif()
 
     add_custom_target(${target_name} ALL
         ${custom_commands}
-        COMMENT "Copying headers for ${PLH_LIBRARY} to ${output_dir}"
+        COMMENT
+        "Copying headers for ${PLH_LIBRARY} to ${output_dir}/${PLH_LIBRARY}"
     )
 
     add_dependencies(${PLH_LIBRARY} ${target_name})
-endmacro()
+endfunction()
 
 # Detects a Homebrew‑installed LLVM toolchain and adds the correct
 # libc++ library directory to the link path.  It does so by:
