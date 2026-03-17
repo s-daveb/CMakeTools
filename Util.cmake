@@ -101,7 +101,7 @@ function(publish_library_headers)
         COMMAND ${CMAKE_COMMAND} -E make_directory ${output_dir}/${PLH_LIBRARY})
 
     if(PLH_GLOB)
-        message(INFO "-- Glob Mode initialized")
+        message("-- Glob Mode initialized")
         file(GLOB_RECURSE resolved_headers
             "${PLH_HEADERS_DIR}/*.hpp"
             "${PLH_HEADERS_DIR}/*.h"
@@ -109,7 +109,6 @@ function(publish_library_headers)
 
         # Copy each file preserving relative path structure
         foreach(header ${resolved_headers})
-            message("${header}")
             file(RELATIVE_PATH relative_path ${PLH_HEADERS_DIR} ${header})
             get_filename_component(relative_dir ${relative_path} DIRECTORY)
             list(APPEND custom_commands
