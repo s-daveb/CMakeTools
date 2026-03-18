@@ -194,8 +194,8 @@ function(macos_use_correct_stdlib)
     string(FIND "${CLANG_VER}" "Apple clang" AppleClangIdx)
     if(NOT AppleClangIdx EQUAL -1)
         message(STATUS
-            "Detected Apple clang from --version output"
-            " Homebrew stdlib detection skipped"
+            "Detected Apple clang from its `--version` output\n"
+            "    Homebrew stdlib detection skipped"
         )
         return()
     endif()
