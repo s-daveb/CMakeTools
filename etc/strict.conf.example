@@ -1,0 +1,11 @@
+# Strict backend configuration example
+# Copy to /usr/local/etc/strict.conf and adjust.
+
+# Backend listen address (lighttpd reverse-proxies here)
+listen_addr = 127.0.0.1
+listen_port = 8080
+
+# Slack app credentials (set via env vars in production, not this file)
+# SLACK_CLIENT_ID
+# SLACK_CLIENT_SECRET
+# SLACK_SIGNING_SECRET

@@ -1,0 +1,37 @@
+# Build directories
+build/
+build-*/
+cmake-build-*/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compiled objects
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Package files
+*.tar.gz
+*.zip
+*.pkg
+
+# macOS
+.DS_Store
+*.dSYM/
+
+# Logs
+*.log
+
+# Config with secrets
+etc/strict.conf
+!etc/strict.conf.example

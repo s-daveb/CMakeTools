@@ -1,0 +1,3 @@
+bin/strict
+@sample etc/strict.conf.example
+share/strict/static/README.md
